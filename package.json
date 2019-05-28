@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "api": "nodemon api.js"
+    "api": "nodemon api.js",
+    "start":"nodemon api.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
