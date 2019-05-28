@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "api": "nodemon api.js",
+    "main":"api.js",
     "start":"nodemon api.js"
   },
   "dependencies": {
