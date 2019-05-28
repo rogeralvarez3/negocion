@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "api": "nodemon api.js",
-    "main":"api.js",
-    "start":"node api.js"
+    "main": "api.js",
+    "start": "node api.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
