@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     api:'http://localhost:3000',
-    db:'http://localhost:3000/db',
     menu:[
       {text:'Tareas',icon:'fab fa-elementor',submenu:[
         {text:'Productos',icon:'fa fa-box'},
@@ -44,12 +44,47 @@ export default new Vuex.Store({
       {text:'Salir',icon:'fa fa-times'},
     ],
     login:false,
-    credentials:{id:1,u:'',permissions:[]}
+    credentials:{id:0,u:'',permissions:[]},
+    db:[],
+    cargando:false,
+    fieldTypes:{
+      1:'number',
+      2:'number',
+      3:'number',
+      4:'number',
+      5:'number',
+      7:'datetime-local',
+      8:'number',
+      9:'number',
+      10:'date',
+      11:'time',
+      12:'datetime-local',
+      13:'number',
+      16:'number',
+      253:'text',
+      254:'text',
+      246:'number'
+     }
   },
   mutations: {
-
+    setDb(state,payload){
+      state.db=payload
+    },
+    setCargando(state,payload){
+      state.cargando=payload
+    },
+    setCredentials(state,payload){
+      state.credentials=payload
+    }
   },
   actions: {
-
+    cargarDatos(context){
+      context.commit('setCargando',true)
+      axios.post(context.state.api+"/obtenerDb").then(res=>{
+        if(res.data.errno){console.log(res.data)}else{
+        context.commit('setDb',res.data)}
+        context.commit('setCargando',false)
+      })
+    },
   }
 })

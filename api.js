@@ -1,4 +1,6 @@
 const express = require("express")
+const session = require('express-session')
+const database=require('./src/database')
 const path = require("path")
 const app = express()
 const cors = require("cors")
@@ -7,18 +9,27 @@ const BodyParser = require("body-parser")
 const io = require("socket.io")()
 
 app.use(cors())
+app.use(session({resave:true,saveUninitialized:false,secret:'ssshhh'}))
 app.use(ConnectHistoryApiFallback())
 app.use(BodyParser.json())
 app.use(express.static(path.resolve(__dirname,'dist')))
 
-const server = app.listen("80",()=>{console.log("Servidor iniciado en https://localhost")})
+const server = app.listen("3000",()=>{console.log("Servidor iniciado en http://localhost:3000/")})
 
-app.post('/',(req,res)=>{
-    //res.send("HOLA")
+app.post('/obtenerDb',(req,res)=>{
+    //if(!req.session.usuario){res.send({errno:1,message:'acceso denegado en la petición'});return}
+    database.obtenerDb().then(rows=>{res.send(rows)})
 })
 app.post('/login',(req,res)=>{
     var data=req.body
-    res.send("recibí tu petición con estos datos "+JSON.stringify(data))
+    database.login(data).then(row=>{
+        if(row){
+            if(!row.errno){req.session.usuario=row}
+            res.send(row)
+        }else{
+            res.send({errno:2,err_msg:'Nombre de usuario o contraseña incorrectos'})
+        }
+    })
 })
 
 io.on("connection",function(socket){

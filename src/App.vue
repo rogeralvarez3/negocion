@@ -26,13 +26,23 @@
     </v-toolbar>
     <v-content class="white">
       <v-container>
-        <router-view />
+        <v-scale-transition leave-absolute origin="top-left">
+          <router-view />
+        </v-scale-transition>
       </v-container>
     </v-content>
     <login :dlg="$store.state.credentials.id===0"></login>
     <v-footer class="pa-3" style="border-top:1px solid #ddd" app>
       <div>RaeSoft 2019</div>
     </v-footer>
+    <v-dialog v-model="$store.state.cargando" width="400">
+      <v-flex row class="white pa-4">
+        <v-layout>
+          <v-progress-circular indeterminate color="blue-grey"></v-progress-circular>
+        </v-layout>
+        <v-layout><h3>Espere...</h3></v-layout>
+      </v-flex>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -49,6 +59,7 @@ export default {
     }
   },
   methods:{
+    
     setSocketHandler:function(){
       var socket = io(this.$store.state.api)
       socket.on('msg',res=>{
@@ -64,4 +75,8 @@ export default {
   }
 }
 </script>
+<style>
+  body{font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif}
+</style>
+
 

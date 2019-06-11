@@ -6,6 +6,10 @@ import Herramientas from './views/Herramientas.vue'
 import Opciones from './views/Opciones.vue'
 import Ayuda from './views/Ayuda.vue'
 
+import Productos from './views/Productos.vue'
+import Clientes from './views/Clientes.vue'
+import Proveedores from './views/Proveedores.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -36,6 +40,21 @@ export default new Router({
       path: '/Ayuda',
       name: 'Ayuda',
       component: Ayuda
+    },
+    {
+      path: '/Productos',
+      name: 'Productos',
+      component: Productos
+    },
+    {
+      path: '/Clientes',
+      name: 'Clientes',
+      component: Clientes
+    },
+    {
+      path: '/Proveedores',
+      name: 'Proveedores',
+      component: Proveedores
     },
     {
       path: '/about',

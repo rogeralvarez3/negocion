@@ -31,9 +31,14 @@
     methods:{
       login:function(){
         var mv=this
+        mv.$store.commit('setCargando',true)
         var params={u:this.u,p:this.p}
         axios.post(mv.$store.state.api+"/login",params).then(res=>{
-          console.log(res.data)
+          if(res.data.errno){mv.$swal({type:'error',title:'Error al iniciar sesión',text:res.data.err_msg})}else{
+            mv.$store.commit('setCredentials',res.data)
+            mv.$store.dispatch('cargarDatos')            
+          }
+          mv.$store.commit('setCargando',false)
         })
       }
     }
