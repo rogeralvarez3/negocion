@@ -13,6 +13,7 @@
                     <v-tab>Lista</v-tab>
                     <v-tab>{{selected.id?'Editar':'Nuevo'}}</v-tab>
                     <v-tab v-if="selected.id" @click="selected={}"><v-icon color="success">fa fa-plus-circle</v-icon></v-tab>
+                    <v-tab v-if="selected.id" @click="confirmarBorrar()"><v-icon color="error">fa fa-times</v-icon></v-tab>
                     <v-tab-item>
                         <v-data-table :items="resultSearch" :headers="tabla.headers" :rows-per-page-items="[10,20,30]" rows-per-page-text="Filas por página">
                             <template v-slot:headers="props">
@@ -44,7 +45,7 @@
                                 </tr>
                             </table>
                         </v-flex>
-                        <v-btn v-if="editando">Guardar&nbsp;<v-icon>fa fa-save</v-icon></v-btn>
+                        <v-btn v-if="editando" @click="guardar()">Guardar&nbsp;<v-icon>fa fa-save</v-icon></v-btn>
                         <v-btn v-if="editando" @click="selected=JSON.parse(JSON.stringify(selected2))">Cancelar&nbsp;<v-icon>fa fa-times</v-icon></v-btn>
                     </v-tab-item>
                 </v-tabs>        
@@ -71,19 +72,21 @@ export default {
     },
     methods:{
         guardar:function(){
-            this.$emit('save',selected)
+            var mv=this
+            mv.$emit('save',mv.$event,mv.selected)
         },
-        confirmarBorrar:function(id){
+        confirmarBorrar:function(){
             var mv=this
             mv.$swal({
-                type:'question',
+                type:'warning',
                 title:'CONFIRME!!!',
                 text:'Está a punto de borrar el registro seleccionado.\n¿Desea continuar?',
-                showCancelButton:true,
-
+                confirmButtonText:'Si',
+                cancelButtonText:'Cancelar',
+                showCancelButton:true
             }).then(res=>{
                 if(res.value){
-                    this.$emit('delete',id)
+                    this.$emit('delete',mv.$event,mv.selected.id)
                 }
             })
         }

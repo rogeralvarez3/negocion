@@ -26,6 +26,7 @@ app.post('/login',(req,res)=>{
         if(row){
             if(!row.errno){req.session.usuario=row}
             res.send(row)
+            io.emit('login',row)
         }else{
             res.send({errno:2,err_msg:'Nombre de usuario o contraseña incorrectos'})
         }
@@ -34,12 +35,18 @@ app.post('/login',(req,res)=>{
 app.post('/save',(req,res)=>{
     //if(!req.session.usuario){res.send({errno:1,message:'acceso denegado en la petición'});return}
     var data = req.body
-    database.save(data).then(rows=>{res.send(rows)})
+    database.save(data).then(rows=>{
+        res.send(rows)
+        io.emit('save',rows)
+    })
 })
 app.post('/delete',(req,res)=>{
     //if(!req.session.usuario){res.send({errno:1,message:'acceso denegado en la petición'});return}
     var data = req.body
-    database.remove(data).then(rows=>{res.send(rows)})
+    database.remove(data).then(rows=>{
+        res.send(rows)
+        io.emit('delete',rows)
+    })
 })
 io.on("connection",function(socket){
     socket.emit("msg","Te haz conectado correctamente, tu id es: "+socket.id)

@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <listar-editar :tabla="tabla" título="Productos" :combos="combos" v-on:save="guardar()" v-on:delete="borrar()"></listar-editar>
+        <listar-editar :tabla="tabla" título="Productos" :combos="combos" v-on:save="guardar" v-on:delete="borrar"></listar-editar>
     </v-app>
 </template>
 
@@ -23,17 +23,19 @@ export default {
         }
     },
     methods:{
-        guardar:function(reg){
+        guardar:function(evt,reg){
             var mv=this
             var url = mv.$store.state.api+"/save"
             axios.post(url,{tabla:'productos',registro:reg}).then(res=>{
+                delete res.data.param
                 mv.$swal(res.data)
             })
         },
-        borrar: function(id){
+        borrar: function(evt,id){
             var mv=this
             var url = mv.$store.state.api+"/delete"
-            axios.post(url,{tabla:'productos',registro:id}).then(res=>{
+            axios.post(url,{tabla:'productos',id:id}).then(res=>{
+                delete res.data.param
                 mv.$swal(res.data)
             })
         }

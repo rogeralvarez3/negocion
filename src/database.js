@@ -76,12 +76,12 @@ const save = function(param){
         if(param.registro.id){
             sql="update `"+param.tabla+"` set " + keyvalues + " where id = "  +param.registro.id + ";select * from `" + param.tabla+"` where id=" + param.registro.id
         }else{
-            sql="insert into `" + param.tabla + " ("+keys+") values("+values+");select * from `" + param.tabla + "` where id = last_insert_id()"
+            sql="insert into `" + param.tabla + "` ("+keys+") values("+values+");select * from `" + param.tabla + "` where id = last_insert_id()"
         }
         cn.query(sql,(err,rows)=>{
             if(err){resolve({type:'error',title:'Error al guardar',text:err.message})}else{
                 param.registro.id=rows[0].id
-                resolve({type:'success',title:'GUARDADO!!!', text:'Registro guardado correctamente',param:{param}})
+                resolve({type:'success',title:'GUARDADO!!!', text:'Registro guardado correctamente',param:param})
             }
         })
     })

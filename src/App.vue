@@ -59,11 +59,18 @@ export default {
     }
   },
   methods:{
-    
     setSocketHandler:function(){
+      var mv=this
       var socket = io(this.$store.state.api)
-      socket.on('msg',res=>{
-        console.log(res)
+      socket.on('login',res=>{
+        //console.log('recibiendo datos del evento login')
+        //console.log(res)
+      })
+      socket.on('save',res=>{
+        mv.$store.commit('save',res)
+      })
+      socket.on('delete',res=>{
+        mv.$store.commit('delete',res)
       })
     }
   },
