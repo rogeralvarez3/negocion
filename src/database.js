@@ -80,7 +80,7 @@ const save = function(param){
         }
         cn.query(sql,(err,rows)=>{
             if(err){resolve({type:'error',title:'Error al guardar',text:err.message})}else{
-                param.registro.id=rows[0].id
+                param.registro=rows[1][0]
                 resolve({type:'success',title:'GUARDADO!!!', text:'Registro guardado correctamente',param:param})
             }
         })

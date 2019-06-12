@@ -67,6 +67,8 @@ export default {
         //console.log(res)
       })
       socket.on('save',res=>{
+        console.log('recibiendo datos del evento save')
+        console.log(res)
         mv.$store.commit('save',res)
       })
       socket.on('delete',res=>{

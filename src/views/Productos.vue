@@ -22,6 +22,15 @@ export default {
             }
         }
     },
+    computed:{
+        tabla:function(){
+            var result=this.$store.state.db.filter(t=>{return t.name==='productos'})
+            if(result.length>0){result=result[0]}else{result={}}
+            //console.log(result)
+            return result
+        }
+        
+    },
     methods:{
         guardar:function(evt,reg){
             var mv=this
@@ -39,15 +48,6 @@ export default {
                 mv.$swal(res.data)
             })
         }
-    },
-    computed:{
-        tabla:function(){
-            var result=this.$store.state.db.filter(t=>{return t.name==='productos'})
-            if(result.length>0){result=result[0]}else{result={}}
-            //console.log(result)
-            return result
-        }
-        
     }
 }
 </script>

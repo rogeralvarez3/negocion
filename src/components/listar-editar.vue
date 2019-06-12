@@ -16,11 +16,7 @@
                     <v-tab v-if="selected.id" @click="confirmarBorrar()"><v-icon color="error">fa fa-times</v-icon></v-tab>
                     <v-tab-item>
                         <v-data-table :items="resultSearch" :headers="tabla.headers" :rows-per-page-items="[10,20,30]" rows-per-page-text="Filas por página">
-                            <template v-slot:headers="props">
-                                <tr>
-                                    <th v-for="col in props.headers" :key="col.value" :class="$store.state.fieldTypes[col.type]==='number'?'text-right blue--text':'text-left blue--text'" >{{col.text}}</th>
-                                </tr>
-                            </template>
+                            
                             <template v-slot:items="props">
                                 <tr @click="selected=JSON.parse(JSON.stringify(props.item));selected2=JSON.parse(JSON.stringify(selected))" :class="props.item.id===selected.id?'info white--text':''">
                                     <td v-for="col in tabla.headers" :key="col.value" :class="$store.state.fieldTypes[col.type]==='number'?'text-right':'text-left'">
@@ -73,6 +69,7 @@ export default {
     methods:{
         guardar:function(){
             var mv=this
+            mv.selected2=JSON.parse(JSON.stringify(mv.selected))
             mv.$emit('save',mv.$event,mv.selected)
         },
         confirmarBorrar:function(){
@@ -89,6 +86,9 @@ export default {
                     this.$emit('delete',mv.$event,mv.selected.id)
                 }
             })
+        },
+        console:function(text){
+            console.log(text)
         }
     },
     computed:{
@@ -96,16 +96,10 @@ export default {
             var mv=this
             if(!mv.tabla.items) return []
             var result= mv.tabla.items.filter(item=>{
-                var strSearch = []
-                Object.keys(item).forEach(k=>{
-                    if(item[k]) {
-                        strSearch.push(item[k].toString().toLowerCase())
-                    }
-                })
-                strSearch = strSearch.join(" ")
+                var strSearch = Object.values(item).join(' ').toLowerCase()
                 return strSearch.indexOf(mv.buscar.toString().toLowerCase())>=0
             })
-            if(result.length>0){mv.selected=JSON.parse(JSON.stringify(result[0]))}
+            //if(result.length>0){mv.selected=JSON.parse(JSON.stringify(result[0]))}
             return result
         },
         itemSelected:function(){

@@ -80,7 +80,7 @@ export default new Vuex.Store({
       var tabla = state.db.filter(t=>{return t.name==payload.param.tabla})[0]
       var registro = tabla.items.findIndex(reg=>{return reg.id==payload.param.registro.id})
       if(registro<0){tabla.items.push(payload.param.registro)}
-      else{Vue.$set(tabla.items,registro,payload.param.registro)}
+      else{Vue.set(tabla.items,registro,payload.param.registro)}
     },
     delete(state,payload){
       var tabla = state.db.filter(t=>{return t.name==payload.param.tabla})[0]
