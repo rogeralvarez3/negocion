@@ -31,7 +31,16 @@ app.post('/login',(req,res)=>{
         }
     })
 })
-
+app.post('/save',(req,res)=>{
+    //if(!req.session.usuario){res.send({errno:1,message:'acceso denegado en la petición'});return}
+    var data = req.body
+    database.save(data).then(rows=>{res.send(rows)})
+})
+app.post('/delete',(req,res)=>{
+    //if(!req.session.usuario){res.send({errno:1,message:'acceso denegado en la petición'});return}
+    var data = req.body
+    database.remove(data).then(rows=>{res.send(rows)})
+})
 io.on("connection",function(socket){
     socket.emit("msg","Te haz conectado correctamente, tu id es: "+socket.id)
 })

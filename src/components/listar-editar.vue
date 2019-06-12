@@ -4,7 +4,7 @@
             <v-card-title class="grey lighten-5 pa-0">
                 <v-flex>
                     <h2 style="padding:10px 0 0 10px" class="blue--text">{{título}}</h2>
-                    <v-text-field style="margin:0 10px 0 10px;" outline v-model="buscar" label="Buscar..." prepend-inner-icon="fa fa-search"></v-text-field>
+                    <v-text-field style="margin:0 10px 0 10px;" :class="resultSearch.length===0?'error':''" outline v-model="buscar" label="Buscar..." prepend-inner-icon="fa fa-search"></v-text-field>
                 </v-flex>
             </v-card-title>
             <v-divider></v-divider>
@@ -71,7 +71,21 @@ export default {
     },
     methods:{
         guardar:function(){
-            $emit('save',selected)
+            this.$emit('save',selected)
+        },
+        confirmarBorrar:function(id){
+            var mv=this
+            mv.$swal({
+                type:'question',
+                title:'CONFIRME!!!',
+                text:'Está a punto de borrar el registro seleccionado.\n¿Desea continuar?',
+                showCancelButton:true,
+
+            }).then(res=>{
+                if(res.value){
+                    this.$emit('delete',id)
+                }
+            })
         }
     },
     computed:{

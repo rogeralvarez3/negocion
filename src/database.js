@@ -7,7 +7,7 @@ const cn = require('mysql').createConnection({
     multipleStatements:true
 })
 
-
+//CONSULTAS DE SELECCIÓN
 const tablas = function(){
     var result = new Promise(resolve=>{
         cn.query("select table_name from information_schema.tables where table_schema='negocion'",(err,rows)=>{
@@ -41,7 +41,6 @@ const db = async function(){
                             value:col.name,text:col.name[0].toUpperCase()+col.name.slice(1,col.name.length).toLowerCase(),type:col.type,length:col.length,
                             flag:col.flag
                         })})
-                        //console.log(cols[i])
                         obj.name=t;obj.items=rows[i];obj.headers=myCols
                         r.push(obj)
                         i++
@@ -63,4 +62,38 @@ const login = function(param){
     })
     return result
 }
-module.exports={obtenerTablas:tablas,obtenerDb:db,login:login}
+
+//CONSULTAS DE ACCIÓN
+const save = function(param){
+    var result = new Promise(resolve=>{
+        var sql = ""
+        var keys=[],values=[],keyvalues=[]
+        Object.keys(param.registro).forEach(k=>{
+            keys.push("`"+k+"`")
+            values.push("'"+param.registro[k]+"'")
+            keyvalues.push("`"+k+"`='"+param.registro[k]+"'")
+        })
+        if(param.registro.id){
+            sql="update `"+param.tabla+"` set " + keyvalues + " where id = "  +param.registro.id + ";select * from `" + param.tabla+"` where id=" + param.registro.id
+        }else{
+            sql="insert into `" + param.tabla + " ("+keys+") values("+values+");select * from `" + param.tabla + "` where id = last_insert_id()"
+        }
+        cn.query(sql,(err,rows)=>{
+            if(err){resolve({type:'error',title:'Error al guardar',text:err.message})}else{
+                param.registro.id=rows[0].id
+                resolve({type:'success',title:'GUARDADO!!!', text:'Registro guardado correctamente',param:{param}})
+            }
+        })
+    })
+    return result
+}
+const remove = function(param){
+    var result = new Promise(resolve=>{
+        var sql = "delete from `"+param.tabla+"` where id="+param.id
+        cn.query(sql,(err,rows)=>{
+            if(err){resolve({type:'error',title:'Error al borrar registro',text:err.message})}else{resolve({type:'success',title:'REGISTRO BORRADO!!!',param:param})}
+        })
+    })
+    return result
+}
+module.exports={obtenerTablas:tablas,obtenerDb:db,login:login,save:save,remove:remove}
