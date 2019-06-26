@@ -1,11 +1,12 @@
 <template>
     <v-app>
-        <listar-editar :tabla="tabla" título="Proveedores" :combos="{}"></listar-editar>
+        <listar-editar :tabla="tabla" título="Proveedores" :combos="{}" v-on:save="guardar" v-on:delete="borrar"></listar-editar>
     </v-app>
 </template>
 
 <script>
 import listarEditar from '../components/listar-editar'
+import axios from 'axios'
 export default {
     components:{listarEditar},
     computed:{
@@ -16,6 +17,24 @@ export default {
             return result
         },
         
+    },
+    methods:{
+        guardar:function(evt,reg){
+            var mv=this
+            var url = mv.$store.state.api+"/save"
+            axios.post(url,{tabla:'proveedores',registro:reg}).then(res=>{
+                delete res.data.param
+                mv.$swal(res.data)
+            })
+        },
+        borrar: function(evt,id){
+            var mv=this
+            var url = mv.$store.state.api+"/delete"
+            axios.post(url,{tabla:'proveedores',id:id}).then(res=>{
+                delete res.data.param
+                mv.$swal(res.data)
+            })
+        }
     }
 }
 </script>

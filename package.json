@@ -1,5 +1,6 @@
 {
   "name": "negocion",
+  "main": "http://localhost:3000",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,12 +8,14 @@
     "build": "vue-cli-service build",
     "api": "nodemon api.js",
     "main": "api.js",
-    "start": "node api.js"
+    "start": "node api.js",
+    "app": "concurrently --kill-others \"node api.js \" \" nw .\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
     "axios": "^0.18.0",
     "body-parser": "^1.19.0",
+    "concurrently": "^4.1.0",
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^2.6.5",
     "cors": "^2.8.5",
@@ -31,6 +34,7 @@
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
     "nodemon": "^1.19.0",
+    "nw": "^0.39.1-sdk",
     "serve-index": "^1.9.1",
     "socket.io": "^2.2.0",
     "stylus": "^0.54.5",

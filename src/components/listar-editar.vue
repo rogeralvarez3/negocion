@@ -15,19 +15,19 @@
                     <v-tab v-if="selected.id" @click="selected={}"><v-icon color="success">fa fa-plus-circle</v-icon></v-tab>
                     <v-tab v-if="selected.id" @click="confirmarBorrar()"><v-icon color="error">fa fa-times</v-icon></v-tab>
                     <v-tab-item>
-                        <v-data-table :items="resultSearch" :headers="tabla.headers" :rows-per-page-items="[10,20,30]" rows-per-page-text="Filas por página">
+                        <v-data-table :items="resultSearch" :headers="headers" :rows-per-page-items="[15,30,45]" rows-per-page-text="Filas por página">
                             
                             <template v-slot:items="props">
-                                <tr @click="selected=JSON.parse(JSON.stringify(props.item));selected2=JSON.parse(JSON.stringify(selected))" :class="props.item.id===selected.id?'info white--text':''">
+                                <tr @click="selected=JSON.parse(JSON.stringify(props.item));selected2=JSON.parse(JSON.stringify(selected))"  :class="props.item.id===selected.id?'blue lighten-1 white--text':''">
                                     <td v-for="col in tabla.headers" :key="col.value" :class="$store.state.fieldTypes[col.type]==='number'?'text-right':'text-left'">
                                         <span v-if="!(col.value in combos)">{{props.item[col.value]}}</span>
-                                        <span v-if="col.value in combos">{{combos[col.value].items.filter(v=>{return v.value==props.item[col.value]})[0].text}}</span>
+                                        <span v-if="col.value in combos">{{combos[col.value].items.filter(v=>{return v.value==props.item[col.value]})[0]?props.item[col.value].text:combos[col.value].items[0].text}}</span>
                                     </td>    
                                 </tr>
                             </template>
                         </v-data-table>
                     </v-tab-item>
-                    <v-tab-item>
+                    <v-tab-item ref="tabEditar">
                         <v-flex pa-4>
                             <table>
                                 <tr v-for="(col,key) in tabla.headers" :key="key">
@@ -63,7 +63,7 @@ export default {
         return{
          buscar:'',
          selected:{},
-         selected2:{}  
+         selected2:{} ,
         }
     },
     methods:{
@@ -76,19 +76,20 @@ export default {
             var mv=this
             mv.$swal({
                 type:'warning',
-                title:'CONFIRME!!!',
-                text:'Está a punto de borrar el registro seleccionado.\n¿Desea continuar?',
+                title:'ADVERTENCIA!!!',
+                text:'Está a punto de borrar el registro seleccionado [id: '+mv.selected.id+'].\n ¿Desea continuar?',
                 confirmButtonText:'Si',
                 cancelButtonText:'Cancelar',
                 showCancelButton:true
             }).then(res=>{
                 if(res.value){
                     this.$emit('delete',mv.$event,mv.selected.id)
+                    mv.selected={}
                 }
             })
         },
-        console:function(text){
-            console.log(text)
+        editar:function(){
+            this.$refs.tabEditar.isActive=true
         }
     },
     computed:{
@@ -96,7 +97,11 @@ export default {
             var mv=this
             if(!mv.tabla.items) return []
             var result= mv.tabla.items.filter(item=>{
-                var strSearch = Object.values(item).join(' ').toLowerCase()
+                var strSearch = []
+                Object.values(item).forEach(val=>{
+                    if(val!=null){strSearch.push(val.toString())}  
+                })
+                strSearch=strSearch.join(' ').toLowerCase()
                 return strSearch.indexOf(mv.buscar.toString().toLowerCase())>=0
             })
             //if(result.length>0){mv.selected=JSON.parse(JSON.stringify(result[0]))}
@@ -115,6 +120,15 @@ export default {
                 if(mv.itemSelected[k]===null){mv.itemSelected[k]=""}
             })
             return !(JSON.stringify(mv.selected)==JSON.stringify(mv.itemSelected))
+        },
+        headers:function(){
+            var mv=this
+            if(mv.tabla.headers){
+                mv.tabla.headers.forEach(col=>{
+                    if(mv.$store.state.fieldTypes[col.type]==='number'){col.align='right'}else{col.align='left'}
+                })    
+            }
+            return mv.tabla.headers
         }
     },
     
@@ -126,4 +140,9 @@ export default {
     .text-left{text-align:left}
     td input,td select{padding: 4px;border:1px solid #ddd;border-radius: 5px;width: 100%;margin: 2px}
     td input[disabled]{background: #eee}
+    .v-datatable tbody tr{cursor: pointer;}
+    .v-datatable tbody tr:nth-child(odd){background-color:rgb(252,252,252)}
+    .theme--light .v-table thead th{color:white;border:1px solid #ddd;background-color:rgb(82, 134, 158)}
+    .theme--light .v-table tbody td,.theme--light .v-table thead tr{height: 30px;border:1px solid #ddd}
+    input[type='number']{width: 100px}
 </style>

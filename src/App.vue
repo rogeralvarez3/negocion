@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app clipped dark class="blue-grey darken-3" v-model="drawer">
+    <v-navigation-drawer app clipped dark class="blue-grey darken-3" v-model="drawer" width=250>
       <v-list>
         <v-list-tile v-for="item in menu" :key="item.text" :to="item.text!='Salir'?item.text:''" @click="item.text==='Salir'?$store.state.credentials.id=0:null">
           <v-list-tile-action><v-icon v-text="item.icon"></v-icon></v-list-tile-action>
@@ -8,7 +8,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar app clipped-left class="elevation-0" style="border-bottom:1px solid #ddd">
+    <v-toolbar dense app clipped-left class="elevation-0" style="border-bottom:1px solid #ddd">
       <v-toolbar-side-icon class="hidden-lg-and-up" @click="drawer=!drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="headline text-uppercase">
         <v-icon style="font-size:32px">fas fa-award</v-icon>

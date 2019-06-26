@@ -35,6 +35,7 @@
         var params={u:this.u,p:this.p}
         axios.post(mv.$store.state.api+"/login",params).then(res=>{
           if(res.data.errno){mv.$swal({type:'error',title:'Error al iniciar sesión',text:res.data.err_msg})}else{
+            if(res.data.type){mv.$swal(res.data);mv.$store.commit('setCargando',false);return}
             mv.$store.commit('setCredentials',res.data)
             mv.$store.dispatch('cargarDatos')            
           }

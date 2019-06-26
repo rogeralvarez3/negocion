@@ -57,7 +57,11 @@ const login = function(param){
     var result = new Promise(resolve=>{
         var sql = "select * from empleados where seudónimo ='"+param.u+"' and contraseña = '"+param.p+"'"
         cn.query(sql,(err,rows)=>{
-            if(err){resolve(err)}else{delete rows[0].Contraseña; resolve(rows[0])}
+            if(err){resolve(err)}else{
+                if(rows[0]){
+                    delete rows[0].Contraseña; resolve(rows[0])    
+                }else{resolve({type:'error',text:'Usuario o contraseña no válidos',title:'ACCESO DENEGADO!!!'})}
+            }
         })
     })
     return result
@@ -70,8 +74,10 @@ const save = function(param){
         var keys=[],values=[],keyvalues=[]
         Object.keys(param.registro).forEach(k=>{
             keys.push("`"+k+"`")
-            values.push("'"+param.registro[k]+"'")
-            keyvalues.push("`"+k+"`='"+param.registro[k]+"'")
+            var valor=param.registro[k]
+            if(valor!='null'){valor="'"+valor+"'"}
+            values.push(valor)
+            keyvalues.push("`"+k+"`="+valor)
         })
         if(param.registro.id){
             sql="update `"+param.tabla+"` set " + keyvalues + " where id = "  +param.registro.id + ";select * from `" + param.tabla+"` where id=" + param.registro.id
