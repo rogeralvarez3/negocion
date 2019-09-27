@@ -5,7 +5,7 @@
       clipped
       v-model="drawer"
       width="250"
-      style="background:none;background-color:rgba(0,150,180,0.4);color:black"
+      style="background:none;background-color:rgba(0,150,180,0.9);color:black"
     >
       <v-list style="background:none">
         <v-list-tile
