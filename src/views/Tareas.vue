@@ -1,15 +1,19 @@
 <template>
-    <v-app>
-        <submenu :items="items"></submenu>
-    </v-app>
+  <v-app>
+    <submenu :items="items"></submenu>
+  </v-app>
 </template>
 
 <script>
-import submenu from "../components/submenu"
+import submenu from "../components/submenu";
 export default {
-    components:{submenu},
-    computed:{
-        items:function(){return this.$store.state.menu[0].submenu},
+  components: { submenu },
+  computed: {
+    items: function() {
+      return this.$store.state.menu[0].submenu;
     }
-}
+  }
+};
 </script>
+<style>
+</style>

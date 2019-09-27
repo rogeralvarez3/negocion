@@ -5,6 +5,7 @@ import Reportes from './views/Reportes.vue'
 import Herramientas from './views/Herramientas.vue'
 import Opciones from './views/Opciones.vue'
 import Ayuda from './views/Ayuda.vue'
+import Facturación from './views/Facturación.vue'
 
 import Productos from './views/Productos.vue'
 import Clientes from './views/Clientes.vue'
@@ -55,6 +56,11 @@ export default new Router({
       path: '/Proveedores',
       name: 'Proveedores',
       component: Proveedores
+    },
+    {
+      path: '/Facturación',
+      name: 'Facturación',
+      component: Facturación
     },
     {
       path: '/about',

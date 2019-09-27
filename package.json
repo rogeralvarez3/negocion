@@ -6,6 +6,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "dist": "build --tasks win-x86,win-x64,linux-x86,linux-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
     "api": "nodemon api.js",
     "main": "api.js",
     "start": "node api.js",
@@ -35,6 +36,7 @@
     "@vue/cli-service": "^3.7.0",
     "nodemon": "^1.19.0",
     "nw": "^0.39.1-sdk",
+    "nwjs-builder-phoenix": "^1.15.0",
     "serve-index": "^1.9.1",
     "socket.io": "^2.2.0",
     "stylus": "^0.54.5",
