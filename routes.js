@@ -1,7 +1,10 @@
 const router = require("express").Router()
+const db = require("./db.js")
 
-router.get('/',(req,res)=>{
-    res.send(`Hola mundo`)
+
+router.post('/mostrar',(req,res)=>{
+    db.mostrar(req.body,result=>{
+        res.send(result)
+    })
 })
-
 module.exports = router

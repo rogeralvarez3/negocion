@@ -1,9 +1,15 @@
 const express = require('express');
 const routes = require('./routes');
-const io = require("socket.io")
+const io = require("socket.io");
+const path = require("path");
 const App = express();
+const cors = require("cors");
+const history = require("connect-history-api-fallback");
 
+App.use(history());
+App.use(cors());
 App.use(express.json());
+App.use(express.static(path.join(__dirname,"dist")))
 App.use(routes);
 
 
