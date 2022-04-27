@@ -42,14 +42,17 @@
     <v-main>
       <router-view />
     </v-main>
+    <login-form />
   </v-app>
 </template>
 <script>
 import userInfo from "./components/userInfo.vue";
+import LoginForm from "./views/Login.vue";
 export default {
   name: "App",
   components: {
     userInfo,
+    LoginForm,
   },
   data: () => ({
     //
@@ -69,6 +72,8 @@ export default {
     mini: false,
   }),
   methods: {},
-  mounted: function () {},
+  mounted: function () {
+    this.$store.dispatch("cargarDatos");
+  },
 };
 </script>
